@@ -1,0 +1,21 @@
+#! /bin/sh
+/etc/init.d/iptables start
+
+
+# THIS SCRIPT NOW RUNS IPTABLES DIRECTLY.
+
+#  #! /bin/sh
+#  DATESTAMP=`date +%m-%d-%y\ %H:%M%P`
+#  
+#  # run the firwall script
+#  /usr/local/bin/firewall.sh
+#  
+#  # spit some output to the console.
+#  echo ' ' 
+#  echo '---- FIREWALL IS NOW ACTIVE ----'
+#  echo ' ' 
+#  iptables --list --numeric
+#  
+#  # echo all the info to the /var/log/firewall.log
+#  echo "$DATESTAMP ---- FIREWALL IS NOW ACTIVE ----" >> /var/log/firewall.log
+#  iptables --list --numeric >> /var/log/firewall.log

@@ -1,0 +1,18 @@
+#
+# $Id: iptables-update,v 1.1 2006/06/15 17:25:34 root Exp $  $Source: /usr/local/sbin/RCS/iptables-update,v $
+#
+
+#!/bin/bash
+
+#
+# iptables-update - for stoping, saving, and restaring the firewall after making adjustments to the firewall.conf file
+#
+
+/etc/init.d/iptables stop
+sh /etc/firewall.conf
+/etc/init.d/iptables save
+/etc/init.d/iptables start
+
+# display the updated ruleset.
+/sbin/iptables --list --verbose --numeric
+
