@@ -1,17 +1,18 @@
 #!/bin/bash
 
-IPTABLES=`which iptables`
+# iptables install
+IPT=$(which iptables)
 
 #reset policy
 set_policy() {
-# set default policies.
-	$IPTABLES -P INPUT ACCEPT 
-        $IPTABLES -P OUTPUT ACCEPT
-        $IPTABLES -P FORWARD ACCEPT 
+	$IPT -P INPUT ACCEPT 
+	$IPT -P OUTPUT ACCEPT
+	$IPT -P FORWARD ACCEPT 
 }
+
 #flush rulesets
 set_default() {
-	$IPTABLES -F 
+	$IPT -F 
 }
 
 # run stuff
