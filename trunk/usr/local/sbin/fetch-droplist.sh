@@ -44,7 +44,6 @@ ipdeny_country() {
 }
 
 fetch_blacklist() {
-
 	#### SSH BLACKLIST ####
 	curl http://atlas-public.ec2.arbor.net/public/ssh_attackers --silent --output /tmp/firewall.ssh_arbor.tmp 
 	curl http://www.infiltrated.net/blacklisted --silent --output /tmp/firewall.infiltrated_ssh.tmp
@@ -60,7 +59,7 @@ fetch_blacklist() {
 		rm -f /tmp/zfw.infiltrated_ssh.tmp
 	fi
 	# process the rulez.sk list, have to slice comments.
-	awk '!/^\#/ {print $1}' /tmp/zfw.ssh_rulez.tmp >> $CMN_BL_FILE	
+	awk '!/^\#/ {print $1}' /tmp/firewall.ssh_rulez.tmp >> $CMN_BL_FILE	
 	if [[ -f /tmp/zfw.rulez.tmp ]]; then
 		rm /tmp/firewall.ssh_rulez.tmp
 	fi
