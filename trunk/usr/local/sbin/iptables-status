@@ -1,8 +1,0 @@
-#!/bin/bash 
-#
-# iptables-status - output current status of firewall.
-
-# active install of iptables
-$IPT=$(which iptables)
-# dump current ruleset 
-$IPT --list --numeric --verbose
