@@ -2,7 +2,7 @@
 # 
 #!/bin/bash
 #
-# FETCH-DROPLIST.SH - fetch lists of 'bad' address and process them for use by /etc/firewall.conf 
+# FETCH-DROPLIST.SH - fetch lists of 'bad' address and process them for use in firewall. 
 #
 
 # common file to dump blocks into.
