@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#
+# iptables-unload: restore iptables to default settings.
+
 # iptables install
 IPT=$(which iptables)
 
