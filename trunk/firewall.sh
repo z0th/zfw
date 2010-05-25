@@ -7,7 +7,7 @@ if [ -r /usr/local/sbin/zfw/firewall.conf ]; then
 	source /usr/local/sbin/zfw/firewall.conf
 else
 	echo "firewall.sh: ERROR: config file not found!"
-	exit 0
+	exit 1 
 fi
 
 # find the iptables install
