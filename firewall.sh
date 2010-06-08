@@ -14,14 +14,14 @@ fi
 ipt=$(which iptables)
 
 #
-# FIREWALL FUNCTIONS
+# FIREWALL FUNCTIONS: define rules to be run. 
 #
 ipt_load_modules() {
 	# for virtual servers, the modules are built in
-	ipt_modules="nf_conntrack_ipv4 iptable_filter ip_tables xt_state nf_conntrack xt_tcpudp x_tables"
+	# module list pulled from config 	
 	modprobe=$(whereis modprobe)
 
-	for module in ${ipt_modules}; do 
+	for module in ${enable_module_list}; do 
 		$modprobe $module
 	done
 }
@@ -153,7 +153,7 @@ enable_logging() {
 enable_blacklist() {
 	# process external blacklist files
 	for file in $(ls -1 ${blacklist_files}); do
-		if [ -r $file ]; then
+		if [ -f $file ]; then
 			for ip in ${pub_ip}; do
 				# look for cidr nets first, /32 included	
 				for net in $(egrep -v "^#" $file | egrep "/[0-9]{1}[0-9]{0,1}$"); do
@@ -170,17 +170,22 @@ enable_blacklist() {
 }
 
 enable_bcast_block() {
-	# does this need a particular module?
+	# needs xt_pkttype module 
 	$ipt -A INPUT -m pkttype --pkt-type broadcast -j DROP
 	$ipt -A INPUT -m pkttype --pkt-type multicast -j DROP 
 }
 
-# no more functions!
+# no more functions to define!
 
-# run function modules in order
-
-# core functions to run
-#ipt_load_modules
+#
+# EXECUTE FUNCTIONS: order of ops is important here
+#
+# do we need to load ipt modules first?
+case ${enable_module_load} in 
+	[yY][eE][sS]) 	ipt_load_modules ;;
+	*) continue ;; 
+esac 
+# clean house, set policy
 ipt_clean_tables
 ipt_set_policy
 ipt_allow_localhost
@@ -191,7 +196,6 @@ case ${enable_blacklist} in
 esac
 # run allows
 ipt_network_allow
-# conditional functions
 # enable ftp 
 case ${enable_ftp} in
 	[yY][eE][sS])	enable_ftp ;;
