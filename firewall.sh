@@ -171,8 +171,8 @@ enable_blacklist() {
 
 enable_bcast_block() {
 	# does this need a particular module?
-	$ipt -A INPUT -m pkttype -pkt-type broadcast -j DROP
-	$ipt -A INPUT -m pkttype -pkt-type multicast -j DROP 
+	$ipt -A INPUT -m pkttype --pkt-type broadcast -j DROP
+	$ipt -A INPUT -m pkttype --pkt-type multicast -j DROP 
 }
 
 # no more functions!
@@ -184,7 +184,7 @@ enable_bcast_block() {
 ipt_clean_tables
 ipt_set_policy
 ipt_allow_localhost
-# blcoks to run before allows
+# blocks to run before allows
 case ${enable_blacklist} in 
 	[yY][eE][sS])	enable_blacklist ;;
 	*) continue ;; 
