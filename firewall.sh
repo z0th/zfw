@@ -179,6 +179,12 @@ enable_bcast_block() {
 	$ipt -A INPUT -m pkttype --pkt-type multicast -j DROP 
 }
 
+enable_ntp() {
+	# let ntp-client and ntpd to work (on all interfaces).
+	$ipt -A INPUT -p tcp --dport 123 -j ACCEPT
+	$ipt -A INPUT -p udp --dport 123 -j ACCEPT
+}
+
 # no more functions to define!
 
 #
@@ -213,6 +219,11 @@ esac
 # enable broadcast packet blocks
 case ${enable_bcast_block} in
 	[yY][eE][sS])	enable_bcast_block ;;
+	*) continue ;; 
+esac
+# enable NTP functionality
+case ${enable_ntp} in
+	[yY][eE][sS])	enable_ntp ;;
 	*) continue ;; 
 esac
 # enable logging, MUST BE LAST
