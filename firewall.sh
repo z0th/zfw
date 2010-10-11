@@ -175,11 +175,11 @@ enable_blacklist() {
 			for file in $(ls -1 ${blacklist_files}); do
 				for ip in ${pub_ip}; do
 					# look for cidr nets first, /32 included	
-					for net in $(egrep -v "^#" $file | egrep "/[0-9]{1}[0-9]{0,1}$"); do
+					for net in $(egrep -v "^#" ${blacklist_files}\$file | egrep "/[0-9]{1}[0-9]{0,1}$"); do
 						$ipt -A BLACKLIST -d $ip -p ALL -s $net -j DROP 
 					done
 					# then single IP addresses
-					for ip in $(egrep -v "^#" $file | egrep -v "/[0-9]{1}[0-9]{0,1}$"); do
+					for ip in $(egrep -v "^#" ${blacklist_files}\$file | egrep -v "/[0-9]{1}[0-9]{0,1}$"); do
 						$ipt -A BLACKLIST -d $ip -p ALL -s $ip -j DROP
 					done
 				done
