@@ -153,24 +153,41 @@ enable_logging() {
 }
 
 enable_blacklist() {
-	# create new chain for evildoers
-	$ipt -N BLACKLIST
-	# process external blacklist files
-	for file in $(ls -1 ${blacklist_files}); do
-		if [ -f $file ]; then
-			for ip in ${pub_ip}; do
-				# look for cidr nets first, /32 included	
-				for net in $(egrep -v "^#" $file | egrep "/[0-9]{1}[0-9]{0,1}$"); do
-					$ipt -A BLACKLIST -d $ip -p ALL -s $net -j DROP 
-				done
-				# then single IP addresses
-				for ip in $(egrep -v "^#" $file | egrep -v "/[0-9]{1}[0-9]{0,1}$"); do
-					$ipt -A BLACKLIST -d $ip -p ALL -s $ip -j DROP
-				done
-
+	# is target readable?
+	if [ -r ${blacklist_files} ]; then 
+		# target is a file
+		if [ -f ${blacklist_files} ]; then 
+			# create chain for evildoers
+			$ipt -N BLACKLIST
+			# read file, look for cidr nets first, /32 included	
+			for net in $(egrep -v "^#" $file | egrep "/[0-9]{1}[0-9]{0,1}$"); do
+				$ipt -A BLACKLIST -d $ip -p ALL -s $net -j DROP 
 			done
+			# then single IP addresses
+			for ip in $(egrep -v "^#" $file | egrep -v "/[0-9]{1}[0-9]{0,1}$"); do
+				$ipt -A BLACKLIST -d $ip -p ALL -s $ip -j DROP
+			done
+		# target is a dir
+		elif [ -d ${blacklist_files} ]; then 
+			# create chain for evildoers
+			$ipt -N BLACKLIST
+			# look at files in dir
+			for file in $(ls -1 ${blacklist_files}); do
+				for ip in ${pub_ip}; do
+					# look for cidr nets first, /32 included	
+					for net in $(egrep -v "^#" $file | egrep "/[0-9]{1}[0-9]{0,1}$"); do
+						$ipt -A BLACKLIST -d $ip -p ALL -s $net -j DROP 
+				done
+					# then single IP addresses
+					for ip in $(egrep -v "^#" $file | egrep -v "/[0-9]{1}[0-9]{0,1}$"); do
+						$ipt -A BLACKLIST -d $ip -p ALL -s $ip -j DROP
+				done
+			done
+		# an error has occoured
+		else 
+			echo "* $0: ${blacklist_files} is not a file or directory!"
+			exit 1
 		fi
-	done
 }
 
 enable_bcast_block() {
