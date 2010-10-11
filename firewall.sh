@@ -189,6 +189,7 @@ enable_blacklist() {
 			echo "* $0: ${blacklist_files} is not a file or directory!"
 			exit 1
 		fi
+	fi
 }
 
 enable_bcast_block() {
