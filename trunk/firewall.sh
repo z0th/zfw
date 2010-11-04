@@ -192,6 +192,15 @@ enable_blacklist() {
 	fi
 }
 
+enable_brute_limit() {
+	# limit the number of connections to a list of ports
+	# adapted from http://www.linuxaria.com/howto/tricks-iptables-firewall?lang=en
+	# will see if this one actually works.
+	for port in ${brute_ports}; do 
+		$ipt -a INPUT -p tcp --syn --dport $port -m connlimit --connlimit-above 6 -j REJECT
+	done
+}
+
 enable_bcast_block() {
 	# needs xt_pkttype module 
 	$ipt -A INPUT -m pkttype --pkt-type broadcast -j DROP
@@ -248,6 +257,11 @@ esac
 # enable logging, MUST BE LAST
 case ${enable_logging} in
 	[yY][eE][sS])	enable_logging ;;
+	*) continue ;; 
+esac
+
+case ${enable_brute_limit} in
+	[yY][eE][sS])	enable_brute_limit ;;
 	*) continue ;; 
 esac
 
