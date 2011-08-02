@@ -73,6 +73,14 @@ fetch_blacklist() {
         	rm -rf /tmp/zfw.zombie.tmp
 	fi
 
+  #### SHEARWATER BRUTES ####
+  # this is a straight text list
+  curl http://www.shearwater.com.au/uploads/files/MH/SSH_attacking_IPs.txt  --silent --output /tmp/zfw.shear.tmp
+  # remove the temp
+  if [[ -e /tmp/zfw.shear.tmp ]]; then 
+    rm -f /tmp/zfw.shear.tmp
+  fi
+
 	#### POST PROCESSING ####
 	# now that we have a list, sort it for dupes and drop it in etc.
 	sort -n $CMN_BL_FILE | uniq > $TGT_BL_FILE 
