@@ -218,7 +218,7 @@ enable_secfix() {
 # do we need to load ipt modules first?
 case ${enable_module_load} in 
 	[yY][eE][sS]) 	ipt_load_modules ;;
-	*) continue ;; 
+	*) echo '$enable_module_load is set to NO. Not loading modules' ;; 
 esac 
 # clean house, set policy
 ipt_clean_tables
@@ -227,37 +227,37 @@ ipt_allow_localhost
 # blocks to run before allows
 case ${enable_blacklist} in 
 	[yY][eE][sS])	enable_blacklist ;;
-	*) continue ;; 
+	*) echo '$enable_blacklist is set to NO. Not enabling blacklist.' ;; 
 esac
 # run allows
 ipt_network_allow
 # enable ftp 
 case ${enable_ftp} in
 	[yY][eE][sS])	enable_ftp ;;
-	*) continue ;; 
+	*) echo '$enable_ftp is set to NO. Not enabling ftp rules.' ;; 
 esac
 # enable torrent
 case ${enable_torrent} in 
 	[yY][eE][sS])	enable_torrent ;;
-	*) continue ;; 
+	*) echo '$enable_torrent is set to NO. Not enabling ftp bittorrent rules.' ;; 
 esac
 # enable broadcast packet blocks
 case ${enable_bcast_block} in
 	[yY][eE][sS])	enable_bcast_block ;;
-	*) continue ;; 
+	*) echo '$enable_bcast_block is set to NO. Not enabling broadcast block rules.' ;; 
 esac
 # enable NTP functionality
 case ${enable_ntp} in
 	[yY][eE][sS])	enable_ntp ;;
-	*) continue ;; 
+	*) echo '$enable_ntp is set to NO. Not enabling ntp rules.' ;; 
 esac
 # enable security fixes
 case ${enable_secfix} in 
 	[yY][eE][sS])  enable_secfix;;
-	*) continue ;;
+	*) echo '$enable_secfix is set to NO. Not enabling fixes for cve-2019-114777 cve-2019-114778  cve-2019-114779.' ;; 
 esac
 # enable logging, MUST BE LAST
 case ${enable_logging} in
 	[yY][eE][sS])	enable_logging ;;
-	*) continue ;; 
+	*) echo '$enable_logging is set to NO. Not enabling iptables logging rules.' ;; 
 esac
